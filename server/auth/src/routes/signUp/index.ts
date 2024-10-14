@@ -1,9 +1,8 @@
 import jwt from 'jsonwebtoken';
 import express, {Request, Response} from "express";
+import {BadRequestError, validateRequest} from '@vkorg/ticketing-common';
 
 import {User} from "../../models";
-import {BadRequestError} from "../../errors";
-import {validateRequest} from '../../middlewares';
 
 import {validationHandlers} from "./validations";
 

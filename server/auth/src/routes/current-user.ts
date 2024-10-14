@@ -1,6 +1,5 @@
 import {Router} from 'express';
-
-import {currentUser} from '../middlewares';
+import {currentUser} from '@vkorg/ticketing-common';
 
 const router = Router();
 

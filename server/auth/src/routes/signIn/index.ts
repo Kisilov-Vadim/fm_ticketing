@@ -1,10 +1,9 @@
-import {Router, Request, Response} from 'express';
 import jwt from 'jsonwebtoken';
+import {Router, Request, Response} from 'express';
+import {BadRequestError, validateRequest} from '@vkorg/ticketing-common';
 
 import {User} from '../../models';
 import {Password} from '../../services';
-import {BadRequestError} from '../../errors';
-import {validateRequest} from '../../middlewares';
 
 import {validationHandlers} from './validations';
 

@@ -3,8 +3,7 @@ import express from 'express';
 import {json} from 'body-parser';
 import cookieSession from 'cookie-session';
 
-import {NotFoundError} from './errors';
-import {errorHandler} from './middlewares';
+import {NotFoundError, errorHandler} from '@vkorg/ticketing-common';
 import {
   signInRouter,
   signUpRouter,
