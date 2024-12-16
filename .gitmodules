@@ -1,0 +1,3 @@
+[submodule "fm_ticketing_common"]
+	path = fm_ticketing_common
+	url = https://github.com/Kisilov-Vadim/fm_ticketing_common.git
