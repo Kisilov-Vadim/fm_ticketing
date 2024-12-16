@@ -24,6 +24,14 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
+    - image: seinzk/orders
+      context: server/orders
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
     - image: seinzk/client
       context: client
       docker:
