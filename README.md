@@ -7,7 +7,7 @@ Follow these steps to set up and run the services in your development environmen
    This command starts Colima with Kubernetes enabled and ensures that services are accessible via external IPs:
 
    ```bash
-   colima start --kubernetes --network-address
+   colima start --kubernetes --network-address --memory 6 --cpu 4
    ```
 
 2. **Set Up Ingress-NGINX**
