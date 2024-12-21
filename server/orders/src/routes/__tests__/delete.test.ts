@@ -1,11 +1,24 @@
 import request from 'supertest';
+import mongoose from 'mongoose';
 
 import {app} from '../../app';
+import {natsWrapper} from '../../nats-wrapper';
 import {Order, OrderStatus, Ticket} from '../../models';
 
-it("marks an order as canceled", async () => {
-  const ticket = await Ticket.build({title: 'concert', price: 20});
+const buildTicket = async () => {
+  const ticket = Ticket.build({
+    price: 20,
+    title: 'concert',
+    id: new mongoose.Types.ObjectId().toHexString(),
+  });
+
   await ticket.save();
+
+  return ticket;
+}
+
+it("marks an order as canceled", async () => {
+  const ticket = await buildTicket();
 
   const user = global.signin();
 
@@ -25,4 +38,21 @@ it("marks an order as canceled", async () => {
   expect(updatedOrder!.status).toEqual(OrderStatus.Cancelled);
 });
 
-it.todo("emits an order canceled event");
+it("emits an order canceled event", async () => {
+  const ticket = await buildTicket();
+
+  const user = global.signin();
+
+  const {body: order} = await request(app)
+    .post('/api/orders')
+    .set('Cookie', user)
+    .send({ticketId: ticket.id})
+    .expect(201);
+
+  await request(app)
+    .delete(`/api/orders/${order.id}`)
+    .set('Cookie', user)
+    .expect(204);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
+});

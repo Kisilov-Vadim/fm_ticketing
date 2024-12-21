@@ -4,6 +4,7 @@ import {
   NotFoundError,
   validateRequest,
   NotAuthorizeError,
+  BadRequestError,
 } from '@vkorg/ticketing-common';
 
 import {Ticket} from '../../models';
@@ -24,6 +25,10 @@ router.put(
 
     if (!ticket) throw new NotFoundError();
 
+    if (ticket.orderId) {
+      throw new BadRequestError('Cannot edit a reserved ticket');
+    }
+
     if (ticket.userId !== req.currentUser!.id) throw new NotAuthorizeError()
 
     ticket.set({title: req.body.title, price: req.body.price,});
@@ -35,6 +40,7 @@ router.put(
       title: ticket.title,
       price: ticket.price,
       userId: ticket.userId,
+      version: ticket.version,
     })
 
     res.send(ticket);

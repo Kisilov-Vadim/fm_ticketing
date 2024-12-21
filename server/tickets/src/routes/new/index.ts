@@ -2,10 +2,10 @@ import express, {Request, Response} from 'express';
 import {requireAuth, validateRequest} from '@vkorg/ticketing-common';
 
 import {Ticket} from '../../models';
+import {natsWrapper} from '../../nats-wrapper';
+import {TicketCreatedPublisher} from '../../events';
 
 import {validations} from './validations';
-import {TicketCreatedPublisher} from '../../events';
-import {natsWrapper} from '../../nats-wrapper';
 
 const router = express.Router();
 
@@ -30,6 +30,7 @@ router.post(
       title: ticket.title,
       price: ticket.price,
       userId: ticket.userId,
+      version: ticket.version,
     })
 
     res.status(201).send(ticket);

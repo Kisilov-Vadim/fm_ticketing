@@ -6,6 +6,8 @@ import {
   BadRequestError,
 } from '@vkorg/ticketing-common';
 
+import {natsWrapper} from '../../nats-wrapper';
+import {OrderCreatedPublisher} from '../../events';
 import {Ticket, Order, OrderStatus} from '../../models';
 
 import {validations} from './validations';
@@ -45,6 +47,15 @@ router.post(
     })
 
     await order.save();
+
+    new OrderCreatedPublisher(natsWrapper.client).publish({
+      id: order.id,
+      status: order.status,
+      userId: order.userId,
+      version: order.version,
+      expiresAt: order.expiresAt.toISOString(),
+      ticket: {id: ticket.id, price: ticket.price},
+    })
 
     res.status(201).send(order);
   })
