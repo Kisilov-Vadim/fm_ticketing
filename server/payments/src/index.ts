@@ -2,12 +2,7 @@ import mongoose from 'mongoose';
 
 import {app} from './app';
 import {natsWrapper} from './nats-wrapper';
-import {
-  TicketCreatedListener,
-  TicketUpdatedListener,
-  PaymentCreatedListener,
-  ExpirationCompleteListener,
-} from './events';
+import {OrderCancelledListener, OrderCreatedListener} from './events';
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
@@ -30,6 +25,10 @@ const start = async () => {
     throw new Error('NATS_URL must be defined');
   }
 
+  if (!process.env.STRIPE_KEY) {
+    throw new Error('STRIPE_KEY must be defined');
+  }
+
   try {
     await natsWrapper.connect(
       process.env.NATS_CLUSTER_ID,
@@ -45,10 +44,8 @@ const start = async () => {
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());
 
-    new TicketCreatedListener(natsWrapper.client).listen();
-    new TicketUpdatedListener(natsWrapper.client).listen();
-    new PaymentCreatedListener(natsWrapper.client).listen();
-    new ExpirationCompleteListener(natsWrapper.client).listen();
+    new OrderCreatedListener(natsWrapper.client).listen();
+    new OrderCancelledListener(natsWrapper.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI!);
     console.log('Connected to MongoDB');

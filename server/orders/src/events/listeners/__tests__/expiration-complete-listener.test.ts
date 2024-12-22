@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import {Message} from "node-nats-streaming";
-import {ExpirationCompleteEvent} from "@vkorg/ticketing-common";
+import {ExpirationCompletedEvent} from "@vkorg/ticketing-common";
 
 import {natsWrapper} from "../../../nats-wrapper";
 import {Order, OrderStatus, Ticket} from "../../../models";
@@ -27,7 +27,7 @@ const setup = async () => {
 
   await order.save();
 
-  const data: ExpirationCompleteEvent['data'] = {orderId: order.id};
+  const data: ExpirationCompletedEvent['data'] = {orderId: order.id};
 
   // @ts-expect-error - mock implementation
   const msg: Message = {ack: jest.fn()}

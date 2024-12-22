@@ -1,9 +1,9 @@
 import {
   Subjects,
   Publisher,
-  ExpirationCompleteEvent,
+  ExpirationCompletedEvent,
 } from "@vkorg/ticketing-common";
 
-export class ExpirationCompletePublisher extends Publisher<ExpirationCompleteEvent> {
+export class ExpirationCompletePublisher extends Publisher<ExpirationCompletedEvent> {
   readonly subject = Subjects.ExpirationComplete;
 }

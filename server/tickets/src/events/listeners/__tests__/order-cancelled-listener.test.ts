@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import {OrderCanceledEvent} from "@vkorg/ticketing-common";
+import {OrderCancelledEvent} from "@vkorg/ticketing-common";
 
 import {Ticket} from "../../../models";
 import {natsWrapper} from "../../../nats-wrapper";
@@ -19,7 +19,7 @@ const setup = async () => {
   ticket.set({orderId});
   await ticket.save();
 
-  const data: OrderCanceledEvent['data'] = {
+  const data: OrderCancelledEvent['data'] = {
     version: 0,
     id: orderId,
     ticket: {id: ticket.id},

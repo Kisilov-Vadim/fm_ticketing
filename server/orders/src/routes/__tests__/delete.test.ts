@@ -17,7 +17,7 @@ const buildTicket = async () => {
   return ticket;
 }
 
-it("marks an order as canceled", async () => {
+it("marks an order as cancelled", async () => {
   const ticket = await buildTicket();
 
   const user = global.signin();
@@ -38,7 +38,7 @@ it("marks an order as canceled", async () => {
   expect(updatedOrder!.status).toEqual(OrderStatus.Cancelled);
 });
 
-it("emits an order canceled event", async () => {
+it("emits an order cancelled event", async () => {
   const ticket = await buildTicket();
 
   const user = global.signin();
