@@ -1,9 +1,3 @@
-import React from 'react';
-
-const Banana = () => {
-  return (
-    <h1>Banana page!</h1>
-  )
-}
-
-export default Banana;
+export default () => {
+  return <h1>Banana</h1>;
+};
